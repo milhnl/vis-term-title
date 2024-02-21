@@ -1,10 +1,13 @@
+local print_tty = function(str)
+  local file = io.open('/dev/tty', 'a')
+  file:write(str)
+  file:close()
+end
+
 local update = function(file)
-  vis:command(
-    string.format(
-      ":!echo -ne '\\033]0;edit %s\\007'",
-      (file.name or ''):gsub("'", "'\\''"):gsub('\n', '␊')
+    print_tty(
+      ('\027]0;edit %s\007'):format((file.name or ''):gsub('\n', '␊'))
     )
-  )
 end
 
 vis.events.subscribe(vis.events.WIN_OPEN, function(win)
