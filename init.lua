@@ -26,7 +26,9 @@ end
 
 if os.getenv('TERM_PROGRAM') == 'Apple_Terminal' then
   local cwd = urlencode(get_cmd('pwd'))
-  local hostname = urlencode(get_cmd('hostname'))
+  local hostname = urlencode(get_cmd([[
+    (hostname || hostnamectl hostname) 2>/dev/null
+  ]]))
   update = function(file)
     print_tty(
       '\027]0;\007'
